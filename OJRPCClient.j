@@ -47,7 +47,7 @@
         }
     }
     
-    [CPException raise:"OJRPCException" reason:"Unknown OJRPCError Exception"];
+    [CPException raise:"OJRPCException" reason:"Unknown OJRPC Error"];
 }
 
 - (CPMethodSignature)methodSignatureForSelector:(SEL)aSelector

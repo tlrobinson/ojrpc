@@ -1,31 +1,44 @@
 An incredibly basic RPC mechanism for Objective-J in the browser to Objective-J on the server (via Jack: http://jackjs.org)
 
-Usage:
 
-    Server:
 
-        @implementation SomeClass : CPObject
-        {
-        }
-        - (CPString)caps:(CPString)aString
-        {
-            return aString.toUpperCase();
-        }
-        @end
-    
-        foo = [[SomeClass alloc] init];
-        
-        app = [OJRPCServer serverForObject:foo];
-        
-        Jack.Handler.Jetty.run(app);
+Requirements:
+
+    - Cappuccino Tools installed (http://cappuccino.org/download)
+    - "Jack" library (http://jackjs.org)
+    - "Simple" jar in your CLASSPATH (http://simpleweb.sourceforge.net/)
+
+
+Example:
+
+    To run the example, place the a copy or symlink of the "jack" library and the Cappuccino "Frameworks" directory in the "example" directory (or run "steam create-frameworks"). Start the server by running "objj server.js" from inside "example", then navigate to "http://localhost:8080/index.html". The client will ask the RPC server to capitalize "bar", then it will alert the result.
     
     
-    Client:
-
-        foo = [OJRPCClient objectWithURL:"/path/to/jack/server"];
-    
-        CPLog.info([foo caps:"bar"]); // should print "BAR"
-
 Caveats:
 
     Arguments and return values must implement the CPCoding protocol (includes built-in toll free bridged types like String, Number, Boolean, Array, and Date, but NOT Object);
+    
+
+Example Server:
+
+    @implementation Capitalizer : CPObject
+    {
+    }
+
+    - (CPString)caps:(CPString)aString
+    {
+        return aString.toUpperCase();
+    }
+
+    @end
+
+    capitalizer = [[Capitalizer alloc] init];
+
+    app = [OJRPCServer serverForObject:capitalizer];
+    
+    
+Example Client:
+
+    var capitalizer = [OJRPCClient objectWithURL:"/capitalizer"];
+
+    alert([capitalizer caps:"bar"]); // should alert "BAR"

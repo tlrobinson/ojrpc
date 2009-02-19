@@ -10,15 +10,12 @@
         
         try
         {
-            var invocationData = [CPData dataWithString:(env["jack.input"].read())];
-            
-            CPLog.trace(invocationData);
-            
-            var invocation = [CPKeyedUnarchiver unarchiveObjectWithData:invocationData];
+            var invocationData = [CPData dataWithString:(env["jack.input"].read())],
+                invocation = [CPKeyedUnarchiver unarchiveObjectWithData:invocationData];
             
             [invocation invokeWithTarget:object];
             
-            // FIXME / HACK (correctly propagate "undefined")
+            // FIXME: correctly propagate "undefined"
             if ([invocation returnValue] === undefined)
                 [invocation setReturnValue:nil];
         

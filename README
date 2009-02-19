@@ -1,0 +1,31 @@
+An incredibly basic RPC mechanism for Objective-J in the browser to Objective-J on the server (via Jack: http://jackjs.org)
+
+Usage:
+
+    Server:
+
+        @implementation SomeClass : CPObject
+        {
+        }
+        - (CPString)caps:(CPString)aString
+        {
+            return aString.toUpperCase();
+        }
+        @end
+    
+        foo = [[SomeClass alloc] init];
+        
+        app = [OJRPCServer serverForObject:foo];
+        
+        Jack.Handler.Jetty.run(app);
+    
+    
+    Client:
+
+        foo = [OJRPCClient objectWithURL:"/path/to/jack/server"];
+    
+        CPLog.info([foo caps:"bar"]); // should print "BAR"
+
+Caveats:
+
+    Arguments and return values must implement the CPCoding protocol (includes built-in toll free bridged types like String, Number, Boolean, Array, and Date, but NOT Object);
